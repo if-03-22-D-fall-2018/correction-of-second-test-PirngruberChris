@@ -105,12 +105,11 @@ struct DictionaryImplementation{
  }
 
  void insert_sorted(Dictionary dictionary, const char* word){
-   Node current = dictionary->head;
-  Node new_node = (Node) malloc(sizeof(struct NodeImplementation));
-  new_node->word = word;
-  new_node->next = 0;
-  if(dictionary->head == 0){ //chaged the content from the if (lined-out one line and added one line)
-    //dict->head = new_node;
+  Node current = dictionary->head;           //ToDo funktion made
+  Node node_to_add = (Node) malloc(sizeof(struct NodeImplementation));
+  node_to_add->word = word;
+  node_to_add->next = 0;
+  if(dictionary->head == 0){
     add(dictionary, word);
   }
   else{
@@ -119,8 +118,8 @@ struct DictionaryImplementation{
     }
 
     if(strcasecmp(dictionary->head->word, word) > 0){
-      new_node->next = dictionary->head;
-      dictionary->head = new_node;
+      node_to_add->next = dictionary->head;
+      dictionary->head = node_to_add;
       dictionary->length++;
     }
     else{
@@ -132,8 +131,8 @@ struct DictionaryImplementation{
       }
 
       if(strcasecmp(current->next->word, word) > 0){
-        new_node->next = current->next;
-        current->next = new_node;
+        node_to_add->next = current->next;
+        current->next = node_to_add;
         dictionary->length++;
       }
     }
