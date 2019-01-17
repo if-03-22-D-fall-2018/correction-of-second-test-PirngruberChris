@@ -108,10 +108,13 @@ struct DictionaryImplementation{
    Node node_to_add = (Node) malloc(sizeof(struct NodeImplementation));
    node_to_add->word = word;
    node_to_add->next = 0;
-   if (dictionary->head == 0) {           //ToDo make function
+   if (dictionary->head == 0) {           //ToDo funktion made
      dictionary->head = node_to_add;
    }
    else{
+     if (is_in_dict(dictionary, word)) {
+       return;
+     }
      Node current = dictionary->head;
      Node previous = 0;
      if (strcmp(dictionary->head->word, word) > 0) {
@@ -119,12 +122,12 @@ struct DictionaryImplementation{
        dictionary->head = node_to_add;
      }
      else{
-       while (current->next != 0 && strcmp(current->word, word) > 0){
+       while (current->next != 0 && strcmp(current->word, word) < 0){
          previous = current;
          current = current->next;
        }
        if (current->next == 0) {
-         current->next = node_to_add;
+         add(dictionary, word);
        }
        else{
          node_to_add->next = previous->next;
