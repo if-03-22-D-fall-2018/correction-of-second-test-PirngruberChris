@@ -105,34 +105,37 @@ struct DictionaryImplementation{
  }
 
  void insert_sorted(Dictionary dictionary, const char* word){
-   Node node_to_add = (Node) malloc(sizeof(struct NodeImplementation));
-   node_to_add->word = word;
-   node_to_add->next = 0;
-   if (dictionary->head == 0) {           //ToDo funktion made
-     dictionary->head = node_to_add;
-   }
-   else{
-     if (is_in_dict(dictionary, word)) {
-       return;
-     }
-     Node current = dictionary->head;
-     Node previous = 0;
-     if (strcmp(dictionary->head->word, word) > 0) {
-       node_to_add->next = current;
-       dictionary->head = node_to_add;
-     }
-     else{
-       while (current->next != 0 && strcmp(current->word, word) < 0){
-         previous = current;
-         current = current->next;
-       }
-       if (current->next == 0) {
-         add(dictionary, word);
-       }
-       else{
-         node_to_add->next = previous->next;
-         previous->next = node_to_add;
-       }
-     }
-   }
- }
+   Node current = dictionary->head;
+  Node new_node = (Node) malloc(sizeof(struct NodeImplementation));
+  new_node->word = word;
+  new_node->next = 0;
+  if(dictionary->head == 0){ //chaged the content from the if (lined-out one line and added one line)
+    //dict->head = new_node;
+    add(dictionary, word);
+  }
+  else{
+    if(is_in_dict(dictionary, word)){
+      return;
+    }
+
+    if(strcasecmp(dictionary->head->word, word) > 0){
+      new_node->next = dictionary->head;
+      dictionary->head = new_node;
+      dictionary->length++;
+    }
+    else{
+      while(current->next != 0 && strcasecmp(current->next->word, word) < 0){
+        current = current->next;
+      }
+      if(current->next == 0){
+        add(dictionary, word);
+      }
+
+      if(strcasecmp(current->next->word, word) > 0){
+        new_node->next = current->next;
+        current->next = new_node;
+        dictionary->length++;
+      }
+    }
+  }
+}
